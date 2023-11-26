@@ -41,7 +41,6 @@ export class TablaComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.datasource.paginator = this.paginator;
-    this.datasource.sort = this.sort;
   }
 
   ngOnInit() {
@@ -51,15 +50,6 @@ export class TablaComponent implements AfterViewInit {
       if (this.mtype) this.loadData(parametro);
 
     });
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.datasource.filter = filterValue.trim().toLowerCase();
-
-    if (this.datasource.paginator) {
-      this.datasource.paginator.firstPage();
-    }
   }
 
   loadData(machineType: String) {

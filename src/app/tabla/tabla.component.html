@@ -1,7 +1,7 @@
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="datasource">
 
-    <ng-container matColumnDef="id">
+    <ng-container matColumnDef="id" style="display: none;">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
 
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>

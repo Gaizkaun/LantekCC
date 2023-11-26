@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { TablefilterComponent } from './tablefilter/tablefilter.component';
 import { SharedService } from './services/shared.service';
+import { HeaderComponent } from './header/header.component';
 
 
 
@@ -19,6 +20,7 @@ import { SharedService } from './services/shared.service';
 @NgModule({
   declarations: [
     AppComponent
+
    ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { SharedService } from './services/shared.service';
     TablaComponent,
     HttpClientModule,
     BrowserAnimationsModule,
-    TablefilterComponent
+    TablefilterComponent,
+    HeaderComponent
   ],
   providers: [SharedService],
   bootstrap: [AppComponent]
