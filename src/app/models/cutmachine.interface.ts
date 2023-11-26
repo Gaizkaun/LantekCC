@@ -4,3 +4,8 @@ export interface cutmachine {
   manufacturer: string;
   technology: number;
 }
+
+export interface machinetype {
+  value: string;
+  viewValue: string;
+}

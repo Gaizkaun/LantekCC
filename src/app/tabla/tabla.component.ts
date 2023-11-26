@@ -1,49 +1,84 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ApiService } from '../services/api.service';
-import { CommonModule } from '@angular/common';
 import { cutmachine } from '../models/cutmachine.interface';
-
-
-
-
+import { TablefilterComponent } from '../tablefilter/tablefilter.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { SharedService } from '../services/shared.service';
 
 @Component({
   selector: 'tabla-component',
   styleUrls: ['tabla.component.css'],
   templateUrl: 'tabla.component.html',
   standalone: true,
-  imports: [MatTableModule],
+  imports: [
+    MatTableModule,
+    TablefilterComponent,
+    MatPaginatorModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+  ],
 })
-export class TablaComponent {
+export class TablaComponent implements AfterViewInit {
+  constructor(
+    private apiService: ApiService,
+    private sharedService: SharedService
+  ) {}
+
   data: cutmachine[] = [];
   datasource = new MatTableDataSource(this.data);
   displayedColumns: string[] = [];
+  mtype: String = '2';
 
-  constructor(private apiService: ApiService) {}
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort)
+  sort: MatSort = new MatSort();
 
-  ngOnInit() {
-    this.loadData();
+  ngAfterViewInit() {
+    this.datasource.paginator = this.paginator;
+    this.datasource.sort = this.sort;
   }
 
-  loadData() {
-    this.apiService.getData("2").subscribe(
+  ngOnInit() {
+    this.loadData(this.mtype);
+    this.sharedService.parameters$.subscribe((parametro) => {
+      this.mtype = parametro;
+      if (this.mtype) this.loadData(parametro);
+
+    });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.datasource.filter = filterValue.trim().toLowerCase();
+
+    if (this.datasource.paginator) {
+      this.datasource.paginator.firstPage();
+    }
+  }
+
+  loadData(machineType: String) {
+    this.apiService.getData(machineType).subscribe(
       (retData: any) => {
         //If data is an array
         if (Array.isArray(retData)) {
-          console.log('Datos de array cargados exitosamente:', retData);
+          console.log('Data loaded ;)', retData);
           this.datasource.data = retData;
           this.displayedColumns = Object.keys(retData[0]);
-        }
-        else if (retData) {
-          console.log('Datos JSON cargados exitosamente:', retData);
+        } else if (retData) {
+          console.log('JSON Data loaded ;)', retData);
           this.datasource.data = retData;
         } else {
-          console.error('La estructura del JSON no es la esperada.');
+          console.error('Not valid JSON :,(');
         }
       },
       (error) => {
-        console.error('Error al obtener datos desde la API', error);
+        console.error('API connection error', error);
       }
     );
   }

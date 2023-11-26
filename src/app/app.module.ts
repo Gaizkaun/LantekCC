@@ -10,6 +10,8 @@ import { TablaComponent } from './tabla/tabla.component';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { TablefilterComponent } from './tablefilter/tablefilter.component';
+import { SharedService } from './services/shared.service';
 
 
 
@@ -17,7 +19,6 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent
-
    ],
   imports: [
     BrowserModule,
@@ -27,9 +28,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatTableModule ,
     TablaComponent,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TablefilterComponent
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

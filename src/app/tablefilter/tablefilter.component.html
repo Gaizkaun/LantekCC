@@ -1,0 +1,11 @@
+<mat-form-field>
+  <mat-label>Select machyne type</mat-label>
+  <mat-select  [(value)]="selected" (selectionChange)="selectMachine(this.selected)">
+    <mat-option *ngFor="let option of machinetypes" [value]="option.viewValue">
+      {{ option.viewValue }}
+    </mat-option>
+  </mat-select>
+
+
+</mat-form-field>
+
